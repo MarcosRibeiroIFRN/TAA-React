@@ -1,12 +1,12 @@
 const mysql = require('mysql');
 
-const senhaBanco =process.env.SENHA_BANCO || " ";
+const senhaBanco =process.env.SENHA_BANCO || "";
 
 //configuração da conexão do banco
 const configConexao={
-    host : " localhost",
+    host : "localhost",
     user: "root",
-    password:senhaBanco,
+    password: senhaBanco,
     database:"crud_react"
 
 };
@@ -19,6 +19,7 @@ conexao.connect(err=>{
         console.log("Erro na conexão do banco");
         process.exit(1);
     }
+    console.log("Banco conectado");
 })
 //exportando a conexão
 module.exports=conexao;

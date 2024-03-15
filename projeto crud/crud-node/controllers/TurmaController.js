@@ -25,4 +25,15 @@ router.post("/",(req,res)=>{
     executarComandosSQL(sql,[nome],res,"Erro na inserção de turmas")
 })
 
+router.put("/",(req,res)=>{
+     const {nome} =req.body;
+     let sql = "update turma set nome = ? where id = ?";
+     executarComandosSQL(sql,[nome,id],res, "Erro no update da turma")
+})
+router.delete("/:id",(req,res)=>{
+    const[id]=req.params.id
+    let sql = "delete from turma where id = ?"
+    executarComandosSQL(sql,[id],res,"Erro na exclusão de turma")
+})
+
  module.exports=router
