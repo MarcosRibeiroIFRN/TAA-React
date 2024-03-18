@@ -1,17 +1,19 @@
-import {AutoComplete, Layout, Menu} from "antd";
+import {AutoComplete, Flex, Layout, Menu} from "antd";
 import { Link,Outlet } from "react-router-dom";
+import LogoIfrn from "../../assets/LogoIfrn.png"
 
-const {Header,Sider, Content}=Layout;
+const {Sider, Content}=Layout;
+
 
 function Base(){
     return(
-        <Layout>
-            <Header>
-                {/* Conteúdo do cabeçalho */}
-            </Header>
             <Layout>
-                <Sider>
-                    <Menu theme ="dark" mode="inline">
+                <Sider theme="light">
+                    {/* flexbox do antd */}
+                    <Flex justify="center" style={{margin:10}}>
+                        <img src={LogoIfrn} alt ="LogoIfrn" style={{width:200}}/>
+                    </Flex>
+                    <Menu  mode="inline">
                         <Menu.Item key="home">
                             <Link to="/">Home</Link>
                         </Menu.Item>
@@ -24,7 +26,7 @@ function Base(){
                     <Outlet/>
                 </Content>
             </Layout>
-        </Layout>
+
 
     );
 }
