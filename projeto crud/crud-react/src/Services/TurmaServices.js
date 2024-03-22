@@ -1,4 +1,4 @@
-const BASE_URL_TURMAS="http://localhost:300/turmas";//url das turmas
+const BASE_URL_TURMAS="http://localhost:3000/turmas";//url das turmas
 
 //criando service com as funções para turma
 const TurmaService={
