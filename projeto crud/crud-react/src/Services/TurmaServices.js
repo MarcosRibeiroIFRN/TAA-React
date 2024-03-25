@@ -16,7 +16,7 @@ const TurmaService={
     salvar : async (turma)=>{
         try{
             const resposta=await fetch(BASE_URL_TURMAS,{
-                method:'POST',
+                method:"POST",
                 headers:{"Content-type":"aplication/json"},
                 body:JSON.stringify(turma)
             });
@@ -27,6 +27,18 @@ const TurmaService={
 
         }catch(error){
             throw error
+        }
+    },
+    excluir: async (id) =>{
+        try{
+            const resposta = await fetch(`${BASE_URL_TURMAS}/${id}`,
+                {method: "DELETE"}
+            );
+            if(!resposta.ok){
+                throw new Error("Erro ao excluir turma");
+            }
+        }catch(erro){
+            throw erro;
         }
     }
 }
