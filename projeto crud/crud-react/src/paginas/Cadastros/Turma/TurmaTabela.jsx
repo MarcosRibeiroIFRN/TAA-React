@@ -9,19 +9,18 @@ function Turma(){
     //hook setando a fonte de dados da tabela
     const [turmas,setTurmas]=useState([]);
     const [abrirModal,setAbrirModal]=useState(false);
-    useEffect(()=>{
-        const buscarTurmas = async()=>{
-            try{
+    
+    const buscarTurmas = async()=>{
+        try{
 
-                const turmas = await TurmaService.listar();
-                //atualização da tabela
-                setTurmas(turmas);
-            }catch(error){
-                console.error("Erro ao buscar turmas",error);
-            }
+            const turmas = await TurmaService.listar();
+            //atualização da tabela
+            setTurmas(turmas);
+        }catch(error){
+            console.error("Erro ao buscar turmas",error);
         }
-        buscarTurmas();
-    },[turmas]);
+    }
+    useEffect(()=>{ buscarTurmas()},[]);
     //  renderizando as colunas
     const columns= [
         {title:"ID",dataIndex:"id",key:"id"},
