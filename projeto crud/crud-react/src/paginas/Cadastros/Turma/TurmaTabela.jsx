@@ -1,82 +1,94 @@
-import { Button, Flex, Form, Input, Modal, Table } from "antd";
-// import { BsFillTrashFill } from "react-icons/bs";
-import { AiFillFilter } from "react-icons/ai";
+import { Button, Flex, Input, Modal, Table, Form } from "antd";
+import { useEffect, useState } from "react";
+import TurmaService from "../../../services/TurmaServices";
 import Title from "antd/es/typography/Title";
-import { useState,useEffect } from "react";
-import TurmaService from "../../../Services/TurmaServices";
 import TurmaModal from "./TurmaModal";
 
+function TurmaTabela(){
 
-function Turma(){
+    const [turmas, setTurmas] = useState([]);
+    const [abrirModal, setAbrirModal] = useState(false);
+    const [turmaEditada, setTurmaEditada] = useState(null);
 
-    //hook setando a fonte de dados da tabela
-    const [turmas,setTurmas]=useState([]);
-    const [abrirModal,setAbrirModal]=useState(false);
-    
-    const buscarTurmas = async()=>{
+    const buscarTurmas = async () => {
         try{
-
             const turmas = await TurmaService.listar();
-            //atualização da tabela
             setTurmas(turmas);
         }catch(error){
-            console.error("Erro ao buscar turmas",error);
+            console.log("Erro ao buscar turmas", error);
         }
     }
 
-    useEffect(()=>{ buscarTurmas()},[]);
+    useEffect(() => {buscarTurmas()},[]);
 
+    /*
+        //Ele vai chamar a função sempre que for necessário 
+        //renderizar o componente
+        useEffect(function(){}) 
 
+        //Ele vai chamar a função na primeira renderização do componente         
+        useEffect(function(){},[]) 
 
-    function editar (registro){
-        console.log(registro);
+        //Se houver mudança nas variáveis dependentes, ele chama a função
+        useEffect(function(){},[turmas, segundaVariavel]) 
+    
+    */
+
+    function editar(turma){
+        setTurmaEditada(turma);
+        setAbrirModal(true);
     }
+
     function excluir({id}){
-        console.log(id)
         Modal.confirm({
-            title:"Tem certeza de que deseja excluir a turma?",
-            content: "Você vai apagar a turma definitivamente!",
-            okText:"Sim, excluir",
-            onType:"danger",
-            cancelText:"Cancelar",
+            title : "Tem certeza que deseja excluir a turma?",
+            content : "Você vai apagar a turma definitivamente!",
+            okText : "Sim, excluir",
+            okType : "danger",
+            cancelText : "Cancelar",
             onOk(){
-                TurmaService.exluir(id.then(()=>{
-                    const turmasAtualizadas=turmas.filter(turma=>turma.id != id);
-                    setTurmas(turmasAtualizadas)
+                TurmaService.excluir(id).then(()=>{
+                    buscarTurmas();
+                    //setTurmas(turmas.filter(turma => turma.id !== id));
+                }).catch(()=>{
+                    console.log("Falha ao excluir turma");
+                });
+            }
+        });
 
-                    console.log(`Turma com id ${id}, excluída com sucesso.`)
-                }).catch(()=>{})
-                    
-                );
-            },
-            onCancel(){}
-        })
     }
-    //  renderizando as colunas
-    const columns= [
-        {title:"ID",dataIndex:"id",key:"id"},
-        {title:"Nome",dataIndex:"nome",key:"nome"},
-        {tittle:"Ações",dataIndex:"acoes",key: "acoes",
-        render:(_,record)=>
-            (<div>
-                <Button onClick={()=>{editar(record)}}>Editar</Button>
-                <Button type="primary" danger onClick={()=>{editar(record)}}  ><AiFillFilter />Excluir</Button>
+
+    const columns = [
+        {title: "ID", dataIndex : "id", key : "id"},
+        {title: "Nome", dataIndex : "nome", key : "nome"},
+        {title: "Ações", 
+         dataIndex : "acoes", 
+         key: "acoes",
+         render: (_, record) => (
+            <div>
+                <Button onClick={()=>{editar(record)}} >Editar</Button>
+                <Button onClick={()=>{excluir(record)}}>Excluir</Button>
             </div>
-            )
-    }
-    ]
+            )         
+        }
+    ];
+    
 
-
-    return(
+    return (
         <>
             <Title level={3}>Turmas</Title>
-            <Flex justify="end" style={{marginBottom:10}}>
-                <Button type="primary" onClick={()=>{setAbrirModal(true)}}>Novo</Button>
-
+            <Flex justify="end" style={{marginBottom : 10}}>
+                <Button type="primary" onClick={()=>{setTurmaEditada(null); setAbrirModal(true);}}>Novo</Button>
             </Flex>
-            <Table dataSource={turmas} columns={columns}/>
-            <TurmaModal abrirModal={abrirModal} setAbrirModal={setAbrirModal} buscarTurmas={buscarTurmas}></TurmaModal>
+            <Table dataSource={turmas} columns={columns}/>   
+
+            <TurmaModal abrirModal={abrirModal} 
+                        setAbrirModal={setAbrirModal} 
+                        buscarTurmas={buscarTurmas}
+                        turmaEditada={turmaEditada}
+                        setTurmaEditada={setTurmaEditada}/>     
         </>
     );
 }
-export default Turma;
+
+export default TurmaTabela;
