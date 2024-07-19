@@ -9,23 +9,29 @@ const datasetSchema=new mongoose.Schema({
         minlength:10,
         maxlength: 50,
         required:true,
+        unique: true
             },
-    nomColumns:{
-        type:Number,
-        min:1,
-        max:20
-    },
+    // nomColumns:{
+    //     type:Number,
+    //     min:1,
+    //     max:20
+    // },
     description:{
         type: String,
     },
     filePath:{
-        type:String
+        type:String,
+        required : [true,"Not fle sended"]
     },
-    createdBy:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"User"
-    },
-    columns:{
-        type:Array
-    }
-},{timestamps:true})
+    // createdBy:{
+    //     type:mongoose.Schema.Types.ObjectId,
+    //     ref:"Users"
+    // },
+    // columns:{
+    //     type:Array
+    // }
+},
+{timestamps:true})
+const DataSets=mongoose.model("Datasets",datasetSchema);
+
+export default DataSets
