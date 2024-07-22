@@ -1,4 +1,4 @@
 const config={
-    veraoAPI:"v1"
+    versaoAPI:"v1"
 }
 export default config;
