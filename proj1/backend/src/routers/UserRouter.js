@@ -3,5 +3,6 @@ import {createUser} from "../controller/UserController.js";
 
 const router=express.Router();
 
-const
+router.post("/",createUser);
+export default router;
 
